@@ -23,7 +23,6 @@ module.exports = function (router) {
         console.log(err);
         return res.status(500).json({msg: 'internal server error'});
       }
-      console.log('saving');
       res.json(data);
     });
   });
@@ -49,6 +48,10 @@ module.exports = function (router) {
       }
       res.json({msg: 'successful removal'});
     });
+  });
+
+  router.get('*', function (req, res) {
+    res.status(404).json({msg: 'found the dead end'});
   });
 
 };

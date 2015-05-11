@@ -15,5 +15,6 @@ app.use('/magic', cardRoutes);
 
 app.listen(process.env.PORT || port, function() {
   console.log('Server running on port: ' + (process.env.PORT || port));
-})
+});
+
 
