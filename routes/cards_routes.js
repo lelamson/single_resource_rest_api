@@ -20,7 +20,10 @@ module.exports = function (router) {
     var newCard = new Card(req.body);
     newCard.save(function (err, data) {
       if (err) {
-        console.log(err);
+        if(err.name === 'ValidationError') {
+          console.log(err);
+          return res.status(405).json(err);
+        }
         return res.status(500).json({msg: 'internal server error'});
       }
       res.json(data);
