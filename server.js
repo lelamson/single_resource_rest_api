@@ -1,13 +1,13 @@
 'use strict';
 
-var mongoose = require('mongoose');
+// var mongoose = require('mongoose');
 var express = require('express');
 var app = express();
 var port = 7000;
 
 var cardRoutes = express.Router();
 
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/cards_dev');
+// mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/cards_dev');
 
 require('./routes/cards_routes')(cardRoutes);
 
