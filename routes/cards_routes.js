@@ -32,8 +32,8 @@ module.exports = function (router) {
         res.json(data);
       })
       .error(function (err) {
-        console.log(err)
-        res.status(500).json({msg: 'iternal server error'})
+        console.log(err);
+        res.status(500).json({msg: 'iternal server error'});
       });
     });
   });

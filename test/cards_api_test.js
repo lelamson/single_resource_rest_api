@@ -1,9 +1,7 @@
 'use strict';
 
-process.env.MONGOLAB_URI = 'mongodb://localhost/cards_test';
 require('../server');
 
-var mongoose = require('mongoose');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 
@@ -12,32 +10,20 @@ chai.use(chaiHttp);
 var expect = chai.expect;
 
 var Card = require('../models/Card');
-
+var Sql = require('sequelize');
+var sql = new Sql('cards_dev_test', 'cards_dev', 'foobar123', {
+  dialect: 'postgres'
+});
 
 describe('cards REST API', function() {
 
   before(function (done) {
-    var testCard = new Card({spell: 'Growth', color: 'Green', cost: 1});
-    testCard.save(function (err, data) {
-      if (err) throw err;
-
-      this.testCard = data;
-    }.bind(this));
-
-    var testCard2 = new Card({spell: 'Acid Rain', color: 'Black', cost: 4});
-    testCard2.save(function (err, data) {
-      if (err) throw err;
-
-      this.testCard2 = data;
-      done();
-    }.bind(this));
-
-  });
-
-  after(function (done) {
-    mongoose.connection.db.dropDatabase(function() {
-      done();
-    });
+    Card.sync({force: true})
+      .then(function() {
+        Card.create({spell: 'Growth', color: 'Green', cost: 1});
+        Card.create({spell: 'Acid Rain', color: 'Black', cost: 4});
+        done();
+      });
   });
 
   it('should be able to create new Card', function (done) {
@@ -47,10 +33,11 @@ describe('cards REST API', function() {
     .end(function (err, res) {
       expect(err).to.eql(null);
       expect(res.body.spell).to.eql('Fireball');
-      expect(res.body).to.have.property('_id');
+      expect(res.body).to.have.property('id');
       done();
     });
   });
+
 
   it('should get array of Cards', function (done) {
     chai.request('localhost:7000')
@@ -65,7 +52,7 @@ describe('cards REST API', function() {
 
   it('should update existing Card', function (done) {
     chai.request('localhost:7000')
-    .put('/magic/cards/' + this.testCard._id)
+    .put('/magic/cards/' + 'Growth')
     .send({cost: 2})
     .end(function (err, res) {
       expect(err).to.eql(null);
@@ -76,22 +63,10 @@ describe('cards REST API', function() {
 
   it('should remove Card', function (done) {
     chai.request('localhost:7000')
-    .del('/magic/cards/' + this.testCard2._id)
+    .del('/magic/cards/' + 'Acid Rain')
     .end(function (err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.eql('successful removal');
-      done();
-    });
-  });
-
-  it('should fail data validation', function (done) {
-    chai.request('localhost:7000')
-    .post('/magic/cards')
-    .send({color: 'Blessing', cost: 2})
-    .end(function (err, res) {
-      expect(err).to.eql(null);
-      expect(res.status).to.eql(405);
-      expect(res.body.message).to.eql("Card validation failed");
       done();
     });
   });
