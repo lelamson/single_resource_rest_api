@@ -10,32 +10,29 @@ var userSchema = mongoose.Schema({
   basic: {
     email: String,
     password: String,
+    eat: String
   }
 });
 
 userSchema.methods.genHash = function (password, callback) {
   bcrypt.hash(password, bcrypt.genSalt(8, function (err, salt) {
-    console.log('Salt: ' + salt);
+    // console.log('Salt: ' + salt);
   }), null, function (err, hashed) {
-    console.log('Hash: ' + hashed);
+    // console.log('Hash: ' + hashed);
     callback(null, hashed);
   });
 };
 
 userSchema.methods.checkPassword = function (password, callback) {
-  return bcrypt.compare(password, this.basic.password, function (err, verified) {
+  bcrypt.compare(password, this.basic.password, function (err, verified) {
     if (err) console.log(err);
-    console.log('Pass verified: ' + verified);
+    // console.log('Pass verified: ' + verified);
     callback(null, verified);
   });
 };
 
 userSchema.methods.genToken = function (secret, callback) {
-  eat.encode({id: this._id}, secret, callback);
-  // function (err, token) {
-  //   if (err) console.log(err);
-  //   console.log('Token: ' + token);
-  // });
+  eat.encode({id: this._id}, secret, callback); //change this._id to unique id, UUID or GUID
 };
 
 module.exports = mongoose.model('User', userSchema);

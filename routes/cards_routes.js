@@ -7,7 +7,7 @@ var eatAuth = require('../lib/eat_auth')(process.env.APP_SECRET);
 module.exports = function (router) {
   router.use(bodyparser.json());
 
-  router.get('/cards', function (req, res) {
+  router.get('/cards', eatAuth, function (req, res) {
     Card.find({}, function (err, data) {
       if (err) {
         console.log(err);
@@ -17,7 +17,7 @@ module.exports = function (router) {
     });
   });
 
-  router.post('/cards', function (req, res) {
+  router.post('/cards', eatAuth, function (req, res) {
     var newCard = new Card(req.body);
     newCard.save(function (err, data) {
       if (err) {
@@ -31,7 +31,7 @@ module.exports = function (router) {
     });
   });
 
-  router.put('/cards/:id', function (req, res) {
+  router.put('/cards/:id', eatAuth, function (req, res) {
     var updateCard = req.body;
     delete updateCard._id;
 
@@ -44,7 +44,7 @@ module.exports = function (router) {
     });
   });
 
-  router.delete('/cards/:id', function (req, res) {
+  router.delete('/cards/:id', eatAuth, function (req, res) {
     Card.remove({'_id': req.params.id}, function (err, data) {
       if (err) {
         console.log(err);
@@ -54,7 +54,7 @@ module.exports = function (router) {
     });
   });
 
-  // router.get('*', function (req, res) {
+  // router.get('/*', function (req, res) {
   //   res.status(404).json({msg: 'found the dead end'});
   // });
 

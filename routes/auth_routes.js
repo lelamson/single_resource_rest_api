@@ -10,11 +10,12 @@ module.exports = function (router, passport) {
     var newUserData = JSON.parse(JSON.stringify(req.body));
     delete newUserData.email;
     delete newUserData.password;
+
     var newUser = new User(newUserData);
     newUser.basic.email = req.body.email;
-
-    newUser.genHash(req.body.password, function (err, pass) {
-      newUser.basic.password = pass;
+    newUser.created = new Date();
+    newUser.genHash(req.body.password, function (err, hashed) {
+      newUser.basic.password = hashed;
     });
 
     newUser.save(function (err, user) {
@@ -22,12 +23,13 @@ module.exports = function (router, passport) {
         console.log(err);
         res.status(500).json({msg: 'could not create user'});
       }
-      console.log('27 ' + newUser.basic.password);
+
       user.genToken(process.env.APP_SECRET, function (err, token) {
         if (err) {
           console.log(err);
           return res.status(500).json({msg: 'error generating token'});
         }
+
         res.json({token: token});
       });
     });
@@ -35,16 +37,14 @@ module.exports = function (router, passport) {
   });
 
   router.get('/sign_in', passport.authenticate('basic', {session: false}), function (req, res) {
-
     req.user.genToken(process.env.APP_SECRET, function (err, token) {
       if (err) {
         console.log(err);
-        console.log('43');
         return res.status(500).json({msg: 'error generating token'});
       }
+
       res.json({token: token});
     });
-    res.status(200).json({msg: 'here'});
   });
 
 };
