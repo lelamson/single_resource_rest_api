@@ -1,0 +1,10 @@
+superagent localhost:7000/magic/create_user post {username: 'Example', email: 'test@example.com', password: 'qwerty'}
+
+superagent localhost:7000/magic/sign_in -u 'test@example.com:qwerty'
+
+superagent localhost:7000/magic/sign_in get {token: 'Sb41jPOKVO9hW8BFnjyQMRREJ1buRI4XvjfeGATpuNdd'}
+
+superagent localhost:7000/magic/sign_in get {username: 'Example', email: 'test@example.com', password: 'qwerty'}
+
+
+superagent localhost:7000/magic/sign_in -u 'test@example.com:qwerty'
