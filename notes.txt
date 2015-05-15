@@ -2,9 +2,8 @@ superagent localhost:7000/magic/create_user post {username: 'Example', email: 't
 
 superagent localhost:7000/magic/sign_in -u 'test@example.com:qwerty'
 
-superagent localhost:7000/magic/sign_in get {token: 'Sb41jPOKVO9hW8BFnjyQMRREJ1buRI4XvjfeGATpuNdd'}
+superagent localhost:7000/magic/cards post {spell: 'Fireball', color: 'Red', cost: 1, eat: '0MNPmkkeDI2uwdvXKGl/+2vaBTDwQblw3XnRDfFciiHE'}
 
-superagent localhost:7000/magic/sign_in get {username: 'Example', email: 'test@example.com', password: 'qwerty'}
+{spell: 'Growth', color: 'Green', cost: 1}
 
-
-superagent localhost:7000/magic/sign_in -u 'test@example.com:qwerty'
+HgYtvzwhoHTYCl09kyrCgTao5DtvLIz/SgKxIoNFdH54
