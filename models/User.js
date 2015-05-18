@@ -5,12 +5,12 @@ var bcrypt = require('bcrypt-nodejs');
 var eat = require('eat');
 
 var userSchema = mongoose.Schema({
-  username: String,
+  username: {type: String, required: true},
   created: Date,
   basic: {
-    email: String,
-    password: String,
-    eat: String
+    email: {type: String, unique: true},
+    password: {type: String, required: true},
+    eatTest: String //For testing purposes only
   }
 });
 
@@ -32,7 +32,7 @@ userSchema.methods.checkPassword = function (password, callback) {
 };
 
 userSchema.methods.genToken = function (secret, callback) {
-  eat.encode({id: this._id}, secret, callback); //change this._id to unique id, UUID or GUID
+  eat.encode({id: this._id}, secret, callback);
 };
 
 module.exports = mongoose.model('User', userSchema);

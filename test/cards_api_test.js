@@ -23,7 +23,7 @@ describe('cards REST API', function() {
       testUser.basic.password = hashed;
     });
     testUser.genToken(process.env.APP_SECRET, function (err, token) {
-      testUser.basic.eat = token;
+      testUser.basic.eatTest = token;
     });
     testUser.save(function (err, data) {
       if (err) throw err;
@@ -54,10 +54,20 @@ describe('cards REST API', function() {
     });
   });
 
+  it('should fail login without token', function (done) {
+    chai.request('localhost:7000')
+    .get('/magic/cards')
+    .end(function (err, res) {
+      expect(err).to.eql(null);
+      expect(res.body.msg).to.eql('not authorized');
+      done();
+    });
+  });
+
   it('should be able to create new Card', function (done) {
     chai.request('localhost:7000')
     .post('/magic/cards')
-    .send({spell: 'Fireball', color: 'Red', cost: 2, eat: this.testUser.basic.eat})
+    .send({spell: 'Fireball', color: 'Red', cost: 2, eat: this.testUser.basic.eatTest})
     .end(function (err, res) {
       expect(err).to.eql(null);
       expect(res.body.spell).to.eql('Fireball');
@@ -69,7 +79,7 @@ describe('cards REST API', function() {
   it('should get array of Cards', function (done) {
     chai.request('localhost:7000')
     .get('/magic/cards')
-    .send({eat: this.testUser.basic.eat})
+    .send({eat: this.testUser.basic.eatTest})
     .end(function (err, res) {
       expect(err).to.eql(null);
       expect(typeof res.body).to.eql('object');
@@ -81,7 +91,7 @@ describe('cards REST API', function() {
   it('should update existing Card', function (done) {
     chai.request('localhost:7000')
     .put('/magic/cards/' + this.testCard._id)
-    .send({cost: 2, eat: this.testUser.basic.eat})
+    .send({cost: 2, eat: this.testUser.basic.eatTest})
     .end(function (err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.eql('successful update');
@@ -92,7 +102,7 @@ describe('cards REST API', function() {
   it('should remove Card', function (done) {
     chai.request('localhost:7000')
     .del('/magic/cards/' + this.testCard2._id)
-    .send({eat: this.testUser.basic.eat})
+    .send({eat: this.testUser.basic.eatTest})
     .end(function (err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.eql('successful removal');
@@ -103,7 +113,7 @@ describe('cards REST API', function() {
   it('should fail data validation', function (done) {
     chai.request('localhost:7000')
     .post('/magic/cards')
-    .send({color: 'Blessing', cost: 2, eat: this.testUser.basic.eat})
+    .send({spell: 'Blessing', cost: 2, eat: this.testUser.basic.eatTest})
     .end(function (err, res) {
       expect(err).to.eql(null);
       expect(res.status).to.eql(405);
@@ -112,19 +122,65 @@ describe('cards REST API', function() {
     });
   });
 
-  // it('should be post a 404', function (done) {
+});
+
+describe('authorization routes', function () {
+
+  after(function (done) {
+    mongoose.connection.db.dropDatabase(function() {
+      done();
+    });
+  });
+
+  it('should create a new user', function (done) {
+    chai.request('localhost:7000')
+    .post('/magic/create_user')
+    .send({username: 'Example', email: 'test@example.com', password: 'password1'})
+    .end(function (err, res) {
+      expect(err).to.eql(null);
+      expect(res.body).to.have.property('token');
+      console.log(res.body);
+      done();
+    });
+  });
+
+  it('should let user sign in', function (done) {
+    chai.request('localhost:7000')
+    .get('/magic/sign_in')
+    .auth('test@example.com', 'password1')
+    .end(function (err, res) {
+      expect(err).to.eql(null);
+      expect(res.body).to.have.property('token');
+      console.log(res.body);
+      done();
+    });
+  });
+
+
+  it('should fail sign in with wrong password', function (done) {
+    chai.request('localhost:7000')
+    .get('/magic/sign_in')
+    .auth('test@example.com', 'bogus')
+    .end(function (err, res) {
+      expect(err).to.eql(null);
+      expect(res.status).to.eql(500);
+      expect(res.text).to.eql('wrong password\n');
+      done();
+    });
+  });
+
+  // it('should fail to create user with existing email', function (done) {
   //   chai.request('localhost:7000')
-  //   .get('/magic/*')
-  //   .send({eat: this.testUser.basic.eat})
+  //   .post('/magic/create_user')
+  //   .send({username: 'Duplicate', email: 'test@example.com', password: 'bogus'})
   //   .end(function (err, res) {
   //     expect(err).to.eql(null);
-  //     expect(res.status).to.eql(404);
-  //     expect(res.body.msg).to.eql('found the dead end');
+  //     console.log(res.error);
+  //     // expect(res.body.msg).to.eql('could not create user');
   //     done();
   //   });
   // });
 
+
 });
-
-
 
