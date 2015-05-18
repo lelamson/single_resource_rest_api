@@ -156,7 +156,6 @@ describe('authorization routes', function () {
     });
   });
 
-
   it('should fail sign in with wrong password', function (done) {
     chai.request('localhost:7000')
     .get('/magic/sign_in')
@@ -168,19 +167,6 @@ describe('authorization routes', function () {
       done();
     });
   });
-
-  // it('should fail to create user with existing email', function (done) {
-  //   chai.request('localhost:7000')
-  //   .post('/magic/create_user')
-  //   .send({username: 'Duplicate', email: 'test@example.com', password: 'bogus'})
-  //   .end(function (err, res) {
-  //     expect(err).to.eql(null);
-  //     console.log(res.error);
-  //     // expect(res.body.msg).to.eql('could not create user');
-  //     done();
-  //   });
-  // });
-
 
 });
 

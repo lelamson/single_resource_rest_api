@@ -22,7 +22,7 @@ module.exports = function (router) {
     newCard.save(function (err, data) {
       if (err) {
         if(err.name === 'ValidationError') {
-          // console.log(err);
+          console.log(err);
           return res.status(405).json(err);
         }
         return res.status(500).json({msg: 'internal server error'});
