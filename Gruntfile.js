@@ -28,7 +28,10 @@ module.exports = function (grunt) {
 
     simplemocha: {
       dev: {
-        src: ['test/**/*.js']
+        src: ['test/*test.js']
+      },
+      client: {
+        src: ['test/client/test.js']
       }
     },
 
@@ -43,7 +46,7 @@ module.exports = function (grunt) {
       test: {
         entry: __dirname + '/test/client/test.js',
         output: {
-          path: 'test/client',
+          path: 'test/client/',
           filename: 'test_bundle.js'
         }
       }
@@ -68,8 +71,10 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('lint', ['jshint:dev']);
-  grunt.registerTask('test', ['simplemocha:dev']);
-  grunt.registerTask('build:dev', ['lint', 'webpack:client', 'copy:html']);
-  grunt.registerTask('build', ['build:dev']);
-  grunt.registerTask('default', ['lint', 'test']);
+  grunt.registerTask('test:c', ['lint', 'simplemocha:client']);
+  grunt.registerTask('test:d', ['lint', 'simplemocha:dev']);
+  grunt.registerTask('test', ['lint', 'simplemocha:client', 'simplemocha:dev']);
+  grunt.registerTask('build:c', ['lint', 'webpack', 'copy:html']);
+  grunt.registerTask('build', ['build:c']);
+  grunt.registerTask('default', ['test']);
 };

@@ -2,3 +2,5 @@
 **/node_modules/
 **/db
 .env
+**/build/
+**/test/client/test_bundle.js
