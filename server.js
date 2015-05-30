@@ -6,7 +6,7 @@ var passport = require('passport');
 var app = express();
 var port = 7000;
 
-process.env.APP_SECRET = process.env.APP_SECRET || 'place holder'
+process.env.APP_SECRET = process.env.APP_SECRET || 'place holder';
 
 var cardRoutes = express.Router();
 var userRoutes = express.Router();
@@ -14,6 +14,8 @@ var userRoutes = express.Router();
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/cards_dev');
 
 app.use(passport.initialize());
+
+app.use(express.static(__dirname + '/build'));
 
 require('./lib/passport_strat')(passport);
 
