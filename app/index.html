@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html lang='en'>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <title>Deck'mon</title>
   </head>
 
 
-  <body>
-    <h1>Magic Cards</h1>
-    <p>Collection of all your cards to build dat deck destory!</p>
+  <body data-ng-app ="cardsApp">
+    <main data-ng-controller="cardsController" data-ng-init="getAll()">
 
-    <p>Deck
-      <ul id='cardlist'>
-      </ul>
-    </p>
+      <h1>Magic Cards</h1>
+      <p>Collection of all your cards to build dat deck destory!</p>
 
-    <p id='colortype'></p>
-    <script type='text/javascript' src='bundle.js'></script>
+      <p>Deck
+        <ul data-ng-repeat="card in cards">
+          <li>{{card.color}}: {{card.spell}} (cost:{{card.cost}})</li>
+        </ul>
+      </p>
+
+      <p id="colortype"></p>
+
+      <form name="newCardForm" data-ng-submit="createCard()">
+
+        <input type="text" placeholder="Spell Name" required data-ng-model="newCard.spell">
+        <input type="text" placeholder="Color" required data-ng-model="newCard.color">
+        <input type="text" placeholder="Cost: 1-4" data-ng-model="newCard.cost">
+        <button type="submit" data-ng-disabled="newCardForm.$invalid">Create New Card</button>
+
+      </form>
+
+    </main>
+    <script type="text/javascript" src="bundle.js"></script>
   </body>
 </html>

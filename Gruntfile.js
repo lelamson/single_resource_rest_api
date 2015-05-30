@@ -13,6 +13,10 @@ module.exports = function (grunt) {
         src: ['*.js', 'lib/*.js', 'models/*.js', 'routes/*.js', 'test/*.js']
       },
 
+      client: {
+        src: ['app/**/*.js', '!app/js/client.js'],
+      },
+
       options: {
         node: true,
         globals: {
@@ -37,7 +41,7 @@ module.exports = function (grunt) {
 
     webpack: {
       client: {
-        entry: __dirname + '/app/client.js',
+        entry: __dirname + '/app/js/client.js',
         output: {
           path: 'build/',
           filename: 'bundle.js'
@@ -70,7 +74,7 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('lint', ['jshint:dev']);
+  grunt.registerTask('lint', ['jshint:dev', 'jshint:client']);
   grunt.registerTask('test:c', ['lint', 'simplemocha:client']);
   grunt.registerTask('test:d', ['lint', 'simplemocha:dev']);
   grunt.registerTask('test', ['lint', 'simplemocha:client', 'simplemocha:dev']);
