@@ -28,7 +28,14 @@ module.exports = function (app) {
         });
     };
 
-
+    $scope.removeCard = function (card) {
+      $scope.cards.splice($scope.cards.indexOf(card), 1);
+      $http.delete('magic/cards/' + card._id)
+        .error(function (data) {
+          console.log(data);
+          $scope.errors.push({msg: 'could not remove card: ' + card.spell});
+        });
+    };
 
   }]);
 };

@@ -15,6 +15,7 @@
       <p>Deck
         <ul data-ng-repeat="card in cards">
           <li>{{card.color}}: {{card.spell}} (cost:{{card.cost}})</li>
+            <button data-ng-click="removeCard(card)">Delete</button>
         </ul>
       </p>
 
