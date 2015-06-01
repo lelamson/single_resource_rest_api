@@ -19,7 +19,6 @@ module.exports = function (router) {
 
   router.post('/cards', function (req, res) {
     var newCard = new Card(req.body);
-    console.log(req.body);
     newCard.save(function (err, data) {
       if (err) {
         if(err.name === 'ValidationError') {
