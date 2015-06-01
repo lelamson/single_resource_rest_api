@@ -13,22 +13,32 @@
       <p>Collection of all your cards to build dat deck destory!</p>
 
       <p>Deck
-        <ul data-ng-repeat="card in cards">
+        <ul data-ng-repeat="card in cards" data-ng-init="card.editing = false;">
           <li>{{card.color}}: {{card.spell}} (cost:{{card.cost}})</li>
+
             <button data-ng-click="removeCard(card)">Delete</button>
+            <button data-ng-click="card.editing = true; edit()">Edit</button>
+
+            <form name="{{'editing' + card._id}}" data-ng-if="card.editing" data-ng-submit="saveCard(card)">
+              <input type="text" data-ng-model="card.spell">
+              <input type="text" data-ng-model="card.color">
+              <input type="text" data-ng-model="card.cost">
+              <button type="submit" >Save Changes</button>
+              <button type="button" data-ng-click="card.editing = false; reset(card)">Cancel</button>
+            </form>
         </ul>
       </p>
 
       <p id="colortype"></p>
 
-      <form name="newCardForm" data-ng-submit="createCard()">
-
-        <input type="text" placeholder="Spell Name" required data-ng-model="newCard.spell">
-        <input type="text" placeholder="Color" required data-ng-model="newCard.color">
-        <input type="text" placeholder="Cost: 1-4" data-ng-model="newCard.cost">
-        <button type="submit" data-ng-disabled="newCardForm.$invalid">Create New Card</button>
-
-      </form>
+      <section>
+        <form name="newCardForm" data-ng-submit="createCard()">
+          <input type="text" placeholder="Spell Name" required data-ng-model="newCard.spell">
+          <input type="text" placeholder="Color" required data-ng-model="newCard.color">
+          <input type="text" placeholder="Cost: 1-4" data-ng-model="newCard.cost">
+          <button type="submit"  data-ng-disabled="newCardForm.$invalid">Save New Card</button>
+        </form>
+      </section>
 
     </main>
     <script type="text/javascript" src="bundle.js"></script>

@@ -14,10 +14,11 @@ module.exports = function (grunt) {
       },
 
       client: {
-        src: ['app/**/*.js', '!app/js/client.js'],
+        src: ['app/**/*.js'],
       },
 
       options: {
+        force: true,
         node: true,
         globals: {
           describe: true,
@@ -25,7 +26,7 @@ module.exports = function (grunt) {
           before: true,
           after: true,
           beforeEach: true,
-          afterEach: true
+          afterEach: true,
         }
       }
     },
@@ -78,7 +79,7 @@ module.exports = function (grunt) {
   grunt.registerTask('test:c', ['lint', 'simplemocha:client']);
   grunt.registerTask('test:d', ['lint', 'simplemocha:dev']);
   grunt.registerTask('test', ['lint', 'simplemocha:client', 'simplemocha:dev']);
-  grunt.registerTask('build:c', ['lint', 'webpack', 'copy:html']);
-  grunt.registerTask('build', ['build:c']);
+  grunt.registerTask('build:c', ['webpack', 'copy:html']);
+  grunt.registerTask('build', ['lint', 'build:c']);
   grunt.registerTask('default', ['test']);
 };
