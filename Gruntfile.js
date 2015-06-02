@@ -54,6 +54,13 @@ module.exports = function (grunt) {
           path: 'test/client/',
           filename: 'test_bundle.js'
         }
+      },
+      karma_test: {
+        entry: __dirname + '/test/karma_tests/karma_entry.js'
+        output: {
+          path: 'test/karma_tests/',
+          filename: 'karma_test_bundle.js'
+        }
       }
     },
 
@@ -79,6 +86,7 @@ module.exports = function (grunt) {
   grunt.registerTask('test:c', ['lint', 'simplemocha:client']);
   grunt.registerTask('test:d', ['lint', 'simplemocha:dev']);
   grunt.registerTask('test', ['lint', 'simplemocha:client', 'simplemocha:dev']);
+  grunt.registerTask('webpack:k', ['webpack:karma_tests']);
   grunt.registerTask('build:c', ['webpack', 'copy:html']);
   grunt.registerTask('build', ['lint', 'build:c']);
   grunt.registerTask('default', ['test']);

@@ -15,7 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      ''test/karma_tests/bundle.js''
+      'test/karma_tests/karma_test_bundle.js'
     ],
 
 
