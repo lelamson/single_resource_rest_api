@@ -1,6 +1,6 @@
 .DS_Store
-**/node_modules/
-**/db
 .env
+**/node_modules/
+**/db/
 **/build/
-**/test/client/test_bundle.js
+**/*bundle.js
