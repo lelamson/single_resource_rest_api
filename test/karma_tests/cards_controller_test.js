@@ -84,6 +84,17 @@ describe('cards controller', function () {
       expect($scope.errors.length).toBe(1);
     });
 
+    it('should update a card', function () {
+      var card = {_id: 105, spell: 'Giant Growth', color: 'Green', cost: 4};
+      $scope.cards.push(card);
+      $httpBackend.expectPUT('/magic/cards/105').respond(200, {_id: 105, spell: 'Giant Growth', color: 'Green', cost: 3});
+      expect($scope.cards[0].cost).toBe(3);
+      $scope.saveCard(card);
+      expect($scope.cards[0].cost).toBe(4);
+      $httpBackend.flush();
+      expect($scope.errors.length).toBe(0);
+    });
+
   });
 
 });
