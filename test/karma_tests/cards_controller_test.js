@@ -86,11 +86,12 @@ describe('cards controller', function () {
 
     it('should update a card', function () {
       var card = {_id: 105, spell: 'Giant Growth', color: 'Green', cost: 4};
+      var cardEdit = {_id: 105, spell: 'Greater Growth', color: 'Green', cost: 2};
       $scope.cards.push(card);
-      $httpBackend.expectPUT('/magic/cards/105').respond(200, {_id: 105, spell: 'Giant Growth', color: 'Green', cost: 3});
-      expect($scope.cards[0].cost).toBe(3);
-      $scope.saveCard(card);
-      expect($scope.cards[0].cost).toBe(4);
+      $httpBackend.expectPUT('/magic/cards/105', cardEdit).respond(200, {msg: 'successful update'});
+      expect($scope.cards.indexOf(card)).not.toBe(-1);
+      $scope.saveCard(cardEdit);
+      expect($scope.cards.length).toBe(1);
       $httpBackend.flush();
       expect($scope.errors.length).toBe(0);
     });
