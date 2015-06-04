@@ -10,30 +10,56 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     jshint: {
-      dev: {
-        src: ['*.js', 'lib/*.js', 'models/*.js', 'routes/*.js', 'test/*.js']
+      server: {
+        src: ['*.js', 'lib/*.js', 'models/*.js', 'routes/*.js', 'test/server/*test.js'],
+        options: {
+          globals: {
+            describe: true,
+            it: true,
+            before: true,
+            after: true,
+            beforeEach: true,
+            afterEach: true
+          }
+        }
       },
 
       client: {
-        src: ['app/**/*.js'],
+        src: ['app/**/*.js', 'test/client/*test.js'],
+        options: {
+          globals: {
+            angular: true,
+            describe: true,
+            it: true,
+            before: true,
+            after: true,
+          }
+        }
+      },
+
+      jasmine: {
+        src: ['test/karma_tests/*test.js'],
+        options: {
+          globals: {
+            angular: true,
+            describe: true,
+            it: true,
+            expect: true,
+            before: true,
+            after: true,
+            beforeEach: true,
+            afterEach: true
+          }
+        }
       },
 
       options: {
-        force: true,
         node: true,
-        globals: {
-          describe: true,
-          it: true,
-          before: true,
-          after: true,
-          beforeEach: true,
-          afterEach: true
-        }
       }
     },
 
     simplemocha: {
-      dev: {
+      server: {
         src: ['test/*test.js']
       },
       client: {
@@ -83,19 +109,14 @@ module.exports = function (grunt) {
     },
 
     clean: {
-      dev: {
+      server: {
         src: 'build/'
       }
     }
   });
 
-  grunt.registerTask('lint', ['jshint:dev', 'jshint:client']);
-  grunt.registerTask('test:c', ['lint', 'simplemocha:client']);
-  grunt.registerTask('test:d', ['lint', 'simplemocha:dev']);
-  grunt.registerTask('test', ['lint', 'simplemocha:client', 'simplemocha:dev']);
-  grunt.registerTask('build:k', ['webpack:karma_test']);
+  grunt.registerTask('test', ['jshint:server', 'jshint:client', 'simplemocha:client', 'simplemocha:server']);
   grunt.registerTask('karmatest', ['webpack:karma_test', 'karma:unit']);
-  grunt.registerTask('build:c', ['webpack:client', 'webpack:test', 'copy:html']);
-  grunt.registerTask('build', ['lint', 'build:c']);
+  grunt.registerTask('build', ['jshint:client', 'clean:server', 'webpack:client', 'webpack:test', 'copy:html']);
   grunt.registerTask('default', ['test']);
 };
