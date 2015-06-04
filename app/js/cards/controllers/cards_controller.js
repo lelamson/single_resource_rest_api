@@ -3,7 +3,7 @@
 require('angular/angular');
 
 module.exports = function (app) {
-  app.controller('cardsController', ['$scope', '$http', 'RESTResource', function ($scope, $http, resource) {
+  app.controller('cardsController', ['$scope', '$http', 'RESTResource', 'setEmpty', function ($scope, $http, resource, empty) {
     var Card = resource('cards');
     $scope.errors = [];
     $scope.cards = [];
@@ -16,16 +16,16 @@ module.exports = function (app) {
       });
     };
 
-    $scope.createCard = function () {
-      $http.post('/magic/cards', $scope.newCard)
-        .success(function (data) {
-          $scope.cards.push(data);
-          $scope.newCard = null;
-        })
-        .error(function (data) {
-          console.log(data);
-          $scope.errors.push({msg: 'could not create new card'});
-        });
+    $scope.createCard = function (card) {
+      var newCard = angular.copy(card);
+      console.log(21, newCard, card);
+      card = empty(card);
+      $scope.cards.push(newCard);
+      console.log(24, newCard, card);
+      Card.create(newCard, function (err, data) {
+        if (err) return $scope.errors.push({msg: 'could not create new card: ' + newCard.spell});
+        $scope.cards.splice($scope.cards.indexOf(newCard), 1, data);
+      });
     };
 
     $scope.removeCard = function (card) {

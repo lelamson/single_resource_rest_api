@@ -34,7 +34,7 @@
       </p>
 
       <section>
-        <form name="newCardForm" data-ng-submit="createCard()">
+        <form name="newCardForm" data-ng-submit="createCard(newCard)">
           <input type="text" placeholder="Spell Name" required data-ng-model="newCard.spell">
           <input type="text" placeholder="Color" required data-ng-model="newCard.color">
           <input type="text" placeholder="Cost: 1-4" data-ng-model="newCard.cost">
