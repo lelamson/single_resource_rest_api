@@ -3,20 +3,17 @@
 require('angular/angular');
 
 module.exports = function (app) {
-  app.controller('cardsController', ['$scope', '$http', function ($scope, $http) {
+  app.controller('cardsController', ['$scope', '$http', 'RESTResource', function ($scope, $http, resource) {
+    var Card = resource('cards');
     $scope.errors = [];
     $scope.cards = [];
     $scope.copy = [];
 
     $scope.getAll = function () {
-      $http.get('/magic/cards')
-        .success(function (data) {
-          $scope.cards = data;
-        })
-        .error(function (data) {
-          console.log(data);
-          $scope.errors.push({msg: 'error retrieving cards'});
-        });
+      Card.getAll(function (err, data) {
+        if (err) return $scope.errors.push({msg: 'error retrieving cards'});
+        $scope.cards = data;
+      });
     };
 
     $scope.createCard = function () {
