@@ -15,3 +15,4 @@ require('./cards/controllers/cards_controller')(cardsApp);
 
 
 //Directives
+require('./cards/directives/card_form_directive')(cardsApp);

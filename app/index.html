@@ -19,13 +19,14 @@
             <button data-ng-click="removeCard(card)">Delete</button>
             <button data-ng-if="!card.editing" data-ng-click="toggleEdit(card)">Edit</button>
 
-            <form name="{{'editing' + card._id}}" data-ng-if="card.editing" data-ng-submit="saveCard(card)">
-              <input type="text" data-ng-model="card.spell">
-              <input type="text" data-ng-model="card.color">
-              <input type="text" data-ng-model="card.cost">
-              <button type="submit" >Save Changes</button>
-              <button type="button" data-ng-click="toggleEdit(card)">Cancel</button>
-            </form>
+            <section  data-card-form-directive
+                  data-save="saveCard(card)"
+                  data-button-text="Save Changes"
+                  data-label-text="Card: "
+                  data-ng-if="card.editing"
+                  data-card="card">
+              <button type="button" data-ng-click="toggleEdit(card)">Cancel Edit</button>
+            </section>
         </ul>
       </p>
 
