@@ -6,6 +6,7 @@ var cardsApp = angular.module('cardsApp', []);
 
 
 //Services
+require('./services/copy')(cardsApp);
 require('./services/set_empty')(cardsApp);
 require('./services/rest_resource')(cardsApp);
 

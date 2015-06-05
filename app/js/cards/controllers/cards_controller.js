@@ -3,11 +3,11 @@
 require('angular/angular');
 
 module.exports = function (app) {
-  app.controller('cardsController', ['$scope', '$http', 'RESTResource', 'setEmpty', function ($scope, $http, resource, empty) {
+  app.controller('cardsController', ['$scope', '$http', 'RESTResource', 'copy',
+                 'setEmpty', function ($scope, $http, resource, copy, empty) {
     var Card = resource('cards');
     $scope.errors = [];
     $scope.cards = [];
-    $scope.copy = [];
 
     $scope.getAll = function () {
       Card.getAll(function (err, data) {
@@ -35,18 +35,20 @@ module.exports = function (app) {
 
     $scope.saveCard = function (card) {
       card.editing = false;
+      card.backup = undefined;
       Card.save(card, function (err, data) {
         if (err) return $scope.errors.push({msg: 'could not update card'});
       });
     };
 
-    $scope.edit = function () {
-      $scope.copy = angular.copy($scope.cards);
-    };
-
-    $scope.reset = function (card) {
-      var loc = $scope.cards.indexOf(card);
-      $scope.cards.splice(loc, 1, $scope.copy[loc]);
+    $scope.toggleEdit = function (card) {
+      if (card.editing) {
+        card.editing = false;
+        $scope.cards.splice($scope.cards.indexOf(card), 1, card.backup);
+      } else {
+        card.backup = copy(card);
+        card.editing = true;
+      }
     };
 
   }]);

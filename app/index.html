@@ -13,18 +13,18 @@
       <p>Collection of all your cards to build dat deck destory!</p>
 
       <p>Deck
-        <ul data-ng-repeat="card in cards" data-ng-init="card.editing = false;">
+        <ul data-ng-repeat="card in cards">
           <li>{{card.spell}} - {{card.color}} (cost:{{card.cost}})</li>
 
             <button data-ng-click="removeCard(card)">Delete</button>
-            <button data-ng-click="card.editing = true; edit()">Edit</button>
+            <button data-ng-if="!card.editing" data-ng-click="toggleEdit(card)">Edit</button>
 
             <form name="{{'editing' + card._id}}" data-ng-if="card.editing" data-ng-submit="saveCard(card)">
               <input type="text" data-ng-model="card.spell">
               <input type="text" data-ng-model="card.color">
               <input type="text" data-ng-model="card.cost">
               <button type="submit" >Save Changes</button>
-              <button type="button" data-ng-click="card.editing = false; reset(card)">Cancel</button>
+              <button type="button" data-ng-click="toggleEdit(card)">Cancel</button>
             </form>
         </ul>
       </p>
