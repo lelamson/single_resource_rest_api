@@ -18,10 +18,8 @@ module.exports = function (app) {
 
     $scope.createCard = function (card) {
       var newCard = angular.copy(card);
-      console.log(21, newCard, card);
       card = empty(card);
       $scope.cards.push(newCard);
-      console.log(24, newCard, card);
       Card.create(newCard, function (err, data) {
         if (err) return $scope.errors.push({msg: 'could not create new card: ' + newCard.spell});
         $scope.cards.splice($scope.cards.indexOf(newCard), 1, data);
@@ -30,20 +28,16 @@ module.exports = function (app) {
 
     $scope.removeCard = function (card) {
       $scope.cards.splice($scope.cards.indexOf(card), 1);
-      $http.delete('/magic/cards/' + card._id)
-        .error(function (data) {
-          console.log(data);
-          $scope.errors.push({msg: 'could not remove card: ' + card.spell});
-        });
+      Card.remove(card, function (err, data) {
+        if (err) return $scope.errors.push({msg: 'could not remove card: ' + card.spell});
+      });
     };
 
     $scope.saveCard = function (card) {
       card.editing = false;
-      $http.put('/magic/cards/' + card._id, card)
-        .error(function (data) {
-          console.log(data);
-          $scope.errors.push({msg: 'could not update card'});
-        });
+      Card.save(card, function (err, data) {
+        if (err) return $scope.errors.push({msg: 'could not update card'});
+      });
     };
 
     $scope.edit = function () {
