@@ -2,12 +2,12 @@
 
 var Card = require('../models/Card');
 var bodyparser = require('body-parser');
-// var eatAuth = require('../lib/eat_auth')(process.env.APP_SECRET);
+var eatAuth = require('../lib/eat_auth')(process.env.APP_SECRET);
 
 module.exports = function (router) {
   router.use(bodyparser.json());
 
-  router.get('/cards', function (req, res) {
+  router.get('/cards', eatAuth, function (req, res) {
     Card.find({}, function (err, data) {
       if (err) {
         console.log(err);

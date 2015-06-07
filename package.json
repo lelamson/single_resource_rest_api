@@ -18,7 +18,10 @@
   "homepage": "https://github.com/lelamson/single_resource_rest_api",
   "devDependencies": {
     "angular": "^1.4.0",
+    "angular-base64": "^2.0.5",
+    "angular-cookies": "^1.4.0",
     "angular-mocks": "^1.4.0",
+    "angular-route": "^1.4.0",
     "chai": "^2.3.0",
     "chai-http": "^1.0.0",
     "grunt": "^0.4.5",
