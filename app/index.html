@@ -34,13 +34,11 @@
         Colors in the collection are: White, Blue, Black, Red, &amp; Green!
       </p>
 
-      <section>
-        <form name="newCardForm" data-ng-submit="createCard(newCard)">
-          <input type="text" placeholder="Spell Name" required data-ng-model="newCard.spell">
-          <input type="text" placeholder="Color" required data-ng-model="newCard.color">
-          <input type="text" placeholder="Cost: 1-4" data-ng-model="newCard.cost">
-          <button type="submit"  data-ng-disabled="newCardForm.$invalid">Save New Card</button>
-        </form>
+      <section data-card-form-directive
+                data-save="createCard(newCard)"
+                data-button-text="Save New Card"
+                data-label-text="Card: "
+                data-card="newCard">
       </section>
 
     </main>
