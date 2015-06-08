@@ -8,7 +8,7 @@ module.exports = function (router) {
   router.use(bodyparser.json());
 
   router.get('/cards', eatAuth, function (req, res) {
-    Card.find({}, function (err, data) {
+    Card.find({authorId: req.user._id}, function (err, data) {
       if (err) {
         console.log(err);
         return res.status(500).json({msg: 'internal server error'});
@@ -19,6 +19,7 @@ module.exports = function (router) {
 
   router.post('/cards', eatAuth, function (req, res) {
     var newCard = new Card(req.body);
+    newCard.authorId = req.user._id;
     newCard.save(function (err, data) {
       if (err) {
         if(err.name === 'ValidationError') {
