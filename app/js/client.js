@@ -21,13 +21,10 @@ require('./auth/controllers/auth_controller')(cardsApp);
 
 //Directives
 require('./cards/directives/card_form_directive')(cardsApp);
+require('./auth/directives/logout_directive')(cardsApp);
 
 cardsApp.config(['$routeProvider', function ($routeProvider) {
   $routeProvider
-    .when('/cards', {
-      templateUrl: 'templates/views/cards_view.html',
-      controller: 'cardsController'
-    })
     .when('/sign_in', {
       templateUrl: 'templates/views/sign_in.html',
       controller: 'authController'
@@ -36,10 +33,14 @@ cardsApp.config(['$routeProvider', function ($routeProvider) {
       templateUrl: 'templates/views/create_user.html',
       controller: 'authController'
     })
+    .when('/cards', {
+      templateUrl: 'templates/views/cards_view.html',
+      controller: 'cardsController'
+    })
     .when('/', {
-      redirectTo: '/cards'
+      redirectTo: '/sign_in'
     })
     .otherwise({
-      redirectTo: '/create_user'
+      redirectTo: '/sign_in'
     });
 }]);

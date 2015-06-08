@@ -19,7 +19,6 @@ module.exports = function (app) {
       },
 
       create: function (user, callback) {
-        console.log(22, user);
         user.email = user.username;
         $http.post('/magic/create_user', user)
           .success(function(data) {
