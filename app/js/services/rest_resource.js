@@ -15,8 +15,9 @@ module.exports = function (app) {
     };
   };
 
-  app.factory('RESTResource', ['$http', function ($http) {
+  app.factory('RESTResource', ['$http', '$cookies', function ($http, $cookies) {
     return function (resourceName) {
+      $http.defaults.headers.common.eat = $cookies.get('eat');
       return {
         getAll: function (callback) {
           $http.get('/magic/' + resourceName)
@@ -41,10 +42,7 @@ module.exports = function (app) {
             .success(handleSuccess(callback))
             .error(handleError(callback));
         }
-
       };
     };
-
   }]);
-
 };

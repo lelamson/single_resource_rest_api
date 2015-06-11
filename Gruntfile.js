@@ -60,10 +60,10 @@ module.exports = function (grunt) {
 
     simplemocha: {
       server: {
-        src: ['test/*test.js']
+        src: ['test/server/*test.js']
       },
       client: {
-        src: ['test/client/test.js']
+        src: ['test/client/*test.js']
       }
     },
 
